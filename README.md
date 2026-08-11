@@ -23,6 +23,10 @@
   - Enhance CMA stability
   - Enhance system stability
 
+- NOS 4.1(Metroid-B4.1-260603-1221)
+  - Optimize stability
+  - Update graphics-kernel
+
 # How do I submit patches to Android Common Kernels
 
 1. BEST: Make all of your changes to upstream Linux. If appropriate, backport to the stable releases.
