@@ -1358,7 +1358,6 @@ const char * const vmstat_text[] = {
 	"thp_split_page",
 	"thp_split_page_failed",
 	"thp_deferred_split_page",
-	"thp_underused_split_page",
 	"thp_split_pmd",
 	"thp_shatter_page",
 	"thp_shatter_page_failed",
@@ -1401,6 +1400,7 @@ const char * const vmstat_text[] = {
 #ifdef CONFIG_ZSWAP
 	"zswpin",
 	"zswpout",
+	"zswpwb",
 #endif
 #ifdef CONFIG_X86
 	"direct_map_level2_splits",

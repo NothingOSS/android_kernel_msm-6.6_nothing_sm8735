@@ -5,32 +5,33 @@ optimize kernel builds, improving performance for specific architectures and ker
 
 ## kernel.afdo
 
-The AutoFDO profile (kernel.afdo) for vmlinux is collected on kernel version 6.6.100 (
-SHA 4ef3d9b76a6cc5456e55e5dbb3492594d5f89e50, build server ID 14054898) using Pixel 6.
+The AutoFDO profile (kernel.afdo) for vmlinux is collected on kernel version 6.6.123 (
+SHA 276ca917d82bbadd5904c10e4073f9955cd8893d, build server ID 14925724) using Pixel 10.
 
 ## Performance improvements
 
-The following benchmarks demonstrate the performance gains from the latest AutoFDO profile.
-Please note that results can fluctuate slightly between updates due to inherent testing noise.
-A profile is considered successful when it yields positive improvements across the majority of
-benchmarks. All tests were performed on Pixel 6 devices.
+The metrics below reflect the latest benchmark evaluations gathered using the 6.6.123 profile on
+Pixel 8. While a successful profile is defined by positive improvements across most benchmarks,
+results may fluctuate between updates. These variances can be driven by kernel and userspace code
+changes, the sampled nature of AutoFDO profiles, testing hardware differences, and inherent
+benchmark noise.
 
-| Benchmark             | Improvement |
-| --------------------- | ----------- |
-| Boot time             | 2.2%        |
-| Cold App launch time  | 4.4%        |
-| Binder-rpc            | 8.6%        |
-| Binder-addints        | 12.6%       |
-| Hwbinder              | 12.6%       |
-| Bionic (syscall_mmap) | 6.3%        |
+| Benchmark            | Improvement |
+| -------------------- | ----------- |
+| Boot time            | 1.5%        |
+| Cold App launch time | 3.0%        |
+| Binder-rpc           | 19.5%       |
+| Binder-addints       | 37.7%       |
+| Hwbinder             | 11.7%       |
 
 Other improvements tested on past profiles:
 
-| Benchmark        | Improvement |
-| ---------------- | ----------- |
-| Bionic (pthread) | 1.9%        |
-| Bionic (stdio)   | 5.4%        |
-| Bionic (all)     | 2.9%        |
+| Benchmark             | Improvement |
+| --------------------- | ----------- |
+| Bionic (syscall_mmap) | 3.8%        |
+| Bionic (pthread)      | 1.9%        |
+| Bionic (stdio)        | 5.4%        |
+| Bionic (all)          | 2.9%        |
 
 To test a kernel prebuilt with the AutoFDO profile, navigate to [Android build server](
 https://ci.android.com/builds/branches/aosp_kernel-common-android15-6.6/grid) and download

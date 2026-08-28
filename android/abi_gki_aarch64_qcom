@@ -60,10 +60,12 @@
   __bitmap_clear
   bitmap_find_next_zero_area_off
   bitmap_free
+  __bitmap_intersects
   __bitmap_or
   bitmap_parselist
   bitmap_print_to_pagebuf
   bitmap_release_region
+  __bitmap_replace
   __bitmap_set
   bitmap_zalloc
   __blk_alloc_disk
@@ -348,6 +350,7 @@
   device_match_fwnode
   device_match_name
   device_match_of_node
+  device_node_to_regmap
   device_property_present
   device_property_read_string
   device_property_read_u16_array
@@ -380,11 +383,13 @@
   devm_extcon_dev_unregister
   devm_free_irq
   devm_fwnode_pwm_get
+  devm_gpiochip_add_data_with_key
   devm_gpiod_get_optional
   devm_gpio_request
   devm_gpio_request_one
   devm_hwrng_register
   devm_hwspin_lock_register
+  devm_hwspin_lock_request_specific
   devm_iio_channel_get
   devm_iio_device_alloc
   __devm_iio_device_register
@@ -396,6 +401,7 @@
   devm_kasprintf
   devm_kfree
   devm_kmalloc
+  devm_kmemdup
   devm_krealloc
   devm_kstrdup
   devm_kstrdup_const
@@ -768,6 +774,7 @@
   get_net_ns_by_pid
   get_option
   get_page_owner_handle
+  get_phy_device
   get_pid_task
   get_random_bytes
   get_random_u16
@@ -804,6 +811,7 @@
   gpiod_get_optional
   gpiod_get_raw_value
   gpiod_get_value
+  gpiod_put
   gpiod_set_raw_value
   gpiod_set_value_cansleep
   gpiod_to_irq
@@ -845,6 +853,7 @@
   hvc_remove
   __hw_addr_init
   __hw_addr_sync
+  __hw_addr_sync_dev
   __hw_addr_unsync
   hwspin_lock_bust
   hwspin_lock_free
@@ -857,6 +866,7 @@
   i2c_del_driver
   i2c_find_device_by_fwnode
   i2c_get_dma_safe_msg_buf
+  i2c_get_match_data
   i2c_put_dma_safe_msg_buf
   i2c_register_driver
   i2c_smbus_read_byte_data
@@ -1247,6 +1257,7 @@
   __netdev_alloc_frag_align
   __netdev_alloc_skb
   netdev_err
+  netdev_features_change
   netdev_info
   netdev_set_default_ethtool_ops
   netif_carrier_off
@@ -1321,6 +1332,7 @@
   __of_get_address
   of_get_child_by_name
   of_get_cpu_node
+  of_get_mac_address_nvmem
   of_get_named_gpio
   of_get_next_available_child
   of_get_next_child
@@ -1430,6 +1442,7 @@
   pci_store_saved_state
   pci_walk_bus
   pci_write_config_dword
+  pci_write_config_word
   pcpu_nr_pages
   __per_cpu_offset
   per_cpu_ptr_to_phys
@@ -1448,10 +1461,16 @@
   perf_trace_buf_alloc
   perf_trace_run_bpf_submit
   phy_calibrate
+  phy_check_valid
+  phy_device_free
+  phy_device_register
   phy_exit
   phy_init
+  phy_lookup_setting
+  phy_mac_interrupt
   phy_power_off
   phy_power_on
+  phy_restart_aneg
   phy_set_mode_ext
   pick_highest_pushable_task
   pick_migrate_task
@@ -1620,8 +1639,10 @@
   reclaim_shmem_address_space
   refcount_dec_not_one
   refcount_warn_saturate
+  regcache_cache_only
   regcache_mark_dirty
   regcache_sync
+  regcache_sync_region
   __register_blkdev
   __register_chrdev
   register_chrdev_region
@@ -2099,6 +2120,7 @@
   __traceiter_android_rvh_sched_newidle_balance
   __traceiter_android_rvh_sched_nohz_balancer_kick
   __traceiter_android_rvh_schedule
+  __traceiter_android_rvh_schedule_bug
   __traceiter_android_rvh_select_task_rq_fair
   __traceiter_android_rvh_select_task_rq_rt
   __traceiter_android_rvh_set_cpus_allowed_by_task
@@ -2211,6 +2233,7 @@
   __tracepoint_android_rvh_sched_newidle_balance
   __tracepoint_android_rvh_sched_nohz_balancer_kick
   __tracepoint_android_rvh_schedule
+  __tracepoint_android_rvh_schedule_bug
   __tracepoint_android_rvh_select_task_rq_fair
   __tracepoint_android_rvh_select_task_rq_rt
   __tracepoint_android_rvh_set_cpus_allowed_by_task

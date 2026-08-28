@@ -134,6 +134,9 @@
 #define SS_PHY_CTRL_REG		(QSCRATCH_REG_OFFSET + 0x30)
 #define LANE0_PWR_PRESENT	BIT(24)
 
+#define USB_STS_REG		(QSCRATCH_REG_OFFSET + 0xF8)
+#define USB_UTMI_SUSPEND_N	BIT(4)
+
 /* USB DBM Hardware registers */
 #define DBM_REG_OFFSET		0xF8000
 
@@ -3709,6 +3712,13 @@ static int dwc3_msm_prepare_suspend(struct dwc3_msm *mdwc, bool ignore_p3_state)
 	dwc3_msm_write_reg_field(mdwc->base, DWC3_GUSB3PIPECTL(0),
 					DWC3_GUSB3PIPECTL_SUSPHY, 1);
 
+	/* Read USB_STS register to get UTMI Suspend status */
+	reg = dwc3_msm_read_reg(mdwc->base, USB_STS_REG);
+
+	/* when this bit is low the HSPHY is in suspend, return from here */
+	if (!(reg & USB_UTMI_SUSPEND_N))
+		return 0;
+
 	/* Clear previous L2 events */
 	dwc3_msm_write_reg(mdwc->base, PWR_EVNT_IRQ_STAT_REG,
 		PWR_EVNT_LPM_IN_L2_MASK | PWR_EVNT_LPM_OUT_L2_MASK);
@@ -4431,11 +4441,6 @@ static int dwc3_msm_resume(struct dwc3_msm *mdwc)
 
 	/* enable power evt irq for IN P3 detection */
 	enable_irq(mdwc->wakeup_irq[PWR_EVNT_IRQ].irq);
-
-	/* Disable HSPHY auto suspend */
-	dwc3_msm_write_reg(mdwc->base, DWC3_GUSB2PHYCFG(0),
-		dwc3_msm_read_reg(mdwc->base, DWC3_GUSB2PHYCFG(0)) &
-				~DWC3_GUSB2PHYCFG_SUSPHY);
 
 	/* Disable wakeup capable for HS_PHY IRQ & SS_PHY_IRQ if enabled */
 	dwc3_msm_interrupt_enable(mdwc, false);
@@ -7231,6 +7236,15 @@ static int dwc3_otg_start_peripheral(struct dwc3_msm *mdwc, int on)
 		mdwc->force_disconnect = false;
 	} else {
 		dev_dbg(mdwc->dev, "%s: turn off gadget\n", __func__);
+		/*
+		 * Clear the susphy before updateing the vbus valid.
+		 * This is necessary as the susphy interferes with the vbus update
+		 * resulting in late interrupt generation.
+		 */
+		dwc3_msm_write_reg_field(mdwc->base, DWC3_GUSB3PIPECTL(0),
+					DWC3_GUSB3PIPECTL_SUSPHY, 0);
+		dwc3_msm_write_reg_field(mdwc->base, DWC3_GUSB2PHYCFG(0),
+					DWC3_GUSB2PHYCFG_SUSPHY, 0);
 
 		dwc3_override_vbus_status(mdwc, false);
 		mdwc->in_device_mode = false;
@@ -7240,9 +7254,6 @@ static int dwc3_otg_start_peripheral(struct dwc3_msm *mdwc, int on)
 		usb_redriver_notify_disconnect(mdwc->redriver);
 
 		dwc3_msm_notify_event(dwc, DWC3_GSI_EVT_BUF_CLEAR, 0);
-		dwc3_override_vbus_status(mdwc, false);
-		dwc3_msm_write_reg_field(mdwc->base, DWC3_GUSB3PIPECTL(0),
-				DWC3_GUSB3PIPECTL_SUSPHY, 0);
 
 		/*
 		 * DWC3 core runtime PM may return an error during the put sync
