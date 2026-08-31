@@ -30,6 +30,10 @@
 - NOS 4.1(Metroid-B4.1-260624-1457)
   - No new kernel or DTS update patches in this release.
 
+- NOS 4.1(Metroid-B4.1-260814-1733)
+  - Merge keystone/android15-6.6-ks-qcom-release.127 (731eb55) into qcom-6.6
+  - Merge GKI android15-6.6-2026-04_r3
+
 # How do I submit patches to Android Common Kernels
 
 1. BEST: Make all of your changes to upstream Linux. If appropriate, backport to the stable releases.
